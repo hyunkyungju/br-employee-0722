@@ -1,0 +1,42 @@
+# 컴파일된 클래스 파일 및 폴더
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven 빌드 출력 디렉토리
+/target
+/target/**
+!/target/*.jar
+
+# IDE 관련 파일 및 디렉토리
+.idea/
+.project
+.classpath
+.cproject
+.settings/
+*.launch
+*.tmproj
+.vscode/
+
+# 로그 파일
+*.log
+
+# OS 관련 임시 파일
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA 관련 파일 및 디렉토리
+*.iml
+*.ipr
+*.iws
+.idea/libraries/
+.idea/misc.xml
+
+# Eclipse 관련 파일 및 디렉토리
+.metadata/
+bin/
+tmp/
+
+# approval test 로컬 결과
+*.received.txt
