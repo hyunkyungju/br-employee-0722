@@ -3,8 +3,10 @@ package com.sec.bestreviewer.condition;
 import com.sec.bestreviewer.model.EmployeeField;
 import com.sec.bestreviewer.model.Employee;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class FieldEqualsCondition implements Condition {
 
     private final EmployeeField field;

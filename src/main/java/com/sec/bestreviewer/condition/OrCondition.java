@@ -1,7 +1,9 @@
 package com.sec.bestreviewer.condition;
 
 import com.sec.bestreviewer.model.Employee;
+import lombok.Getter;
 
+@Getter
 public class OrCondition implements Condition {
     private final Condition firstCondition;
     private final Condition secondCondition;
