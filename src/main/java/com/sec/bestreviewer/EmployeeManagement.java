@@ -1,6 +1,7 @@
 package com.sec.bestreviewer;
 
 import com.sec.bestreviewer.command.Command;
+import com.sec.bestreviewer.condition.TokenGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class EmployeeManagement  {
         for (final String line : input) {
             try {
                 final TokenGroup tokens = commandParser.parse(line);
-                final Command command = commandFactory.buildCommand(tokens.getType(), tokens.getOptions(), tokens.getParams());
+                final Command command = commandFactory.buildCommand(tokens.getType(), tokens.getOptions(), tokens.getParams(), tokens.getCondTokens());
                 final List<String> result = commandExecutor.execute(command);
                 printer.add(result);
             } catch (IllegalArgumentException exception) {
@@ -36,7 +37,6 @@ public class EmployeeManagement  {
 
         printer.printOutputFile();
     }
-
 
     private void printUsage() {
         System.out.println("input / output 형태는 txt 파일이며, 아래 command 로 input file 을 read 하여, output file 을 생성한다.");

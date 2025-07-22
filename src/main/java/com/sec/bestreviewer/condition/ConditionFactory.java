@@ -2,20 +2,20 @@ package com.sec.bestreviewer.condition;
 
 import com.sec.bestreviewer.model.EmployeeField;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ConditionFactory {
-    public static Condition createCondition(List<String> options, List<String> params, String commandType) {
-        if (isMultiCondition(params)) {
-            return createMultiCondition(options, params, commandType);
+    public static Condition createCondition(ConditionTokens tokens) {
+        if (tokens.isMulti()) {
+            Condition c1 = createSingleCondition(tokens.options1, tokens.column1, tokens.value1);
+            Condition c2 = createSingleCondition(tokens.options2, tokens.column2, tokens.value2);
+            return tokens.isAnd ? new AndCondition(c1, c2) : new OrCondition(c1, c2);
         } else {
-            return createSingleCondition(options, params);
+            return createSingleCondition(tokens.options1, tokens.column1, tokens.value1);
         }
     }
 
-    private static Condition createSingleCondition(List<String> options, List<String> params) {
-        EmployeeField field = EmployeeField.parseField(params.get(0));
-        String value = params.get(1);
+    private static Condition createSingleCondition(List<String> options, String column, String value) {
+        EmployeeField field = EmployeeField.parseField(column);
 
         if (options.contains("-y") && field == EmployeeField.BIRTHDAY)
             return new YearBirthdayCondition(value);
@@ -32,44 +32,7 @@ public class ConditionFactory {
         if (options.contains("-l") && field == EmployeeField.NAME)
             return new LastNameCondition(value);
 
+        // 부등호 등 기타 옵션 추가 필요 시 여기에!
         return new FieldEqualsCondition(field, value);
-    }
-
-    private static Condition createMultiCondition(List<String> options, List<String> params, String commandType) {
-        int idx = params.contains("-a") ? params.indexOf("-a") : params.indexOf("-o");
-        String op = params.get(idx);
-
-        // 조건1 파싱
-        List<String> cond1Raw = params.subList(0, idx);
-        List<String> cond1Options = new ArrayList<>(options);
-        List<String> cond1Params = new ArrayList<>();
-        for (String token : cond1Raw) {
-            if (token.startsWith("-")) cond1Options.add(token);
-            else cond1Params.add(token);
-        }
-        while (cond1Params.size() > 2) cond1Params.remove(cond1Params.size() - 1);
-
-        // 조건2 파싱, 명령어 타입별 마지막 인덱스 결정
-        int cond2EndIdx = params.size();
-        if ("MOD".equals(commandType)) {
-            cond2EndIdx -= 2;
-        }
-        List<String> cond2Raw = params.subList(idx + 1, cond2EndIdx);
-        List<String> cond2Options = new ArrayList<>();
-        List<String> cond2Params = new ArrayList<>();
-        for (String token : cond2Raw) {
-            if (token.startsWith("-")) cond2Options.add(token);
-            else cond2Params.add(token);
-        }
-        while (cond2Params.size() > 2) cond2Params.remove(cond2Params.size() - 1);
-
-        Condition c1 = createSingleCondition(cond1Options, cond1Params);
-        Condition c2 = createSingleCondition(cond2Options, cond2Params);
-
-        return "-a".equals(op) ? new AndCondition(c1, c2) : new OrCondition(c1, c2);
-    }
-
-    private static boolean isMultiCondition(List<String> params) {
-        return params.contains("-a") || params.contains("-o");
     }
 }
