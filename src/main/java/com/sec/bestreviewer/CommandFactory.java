@@ -27,15 +27,15 @@ public class CommandFactory {
                                 params.get(EmployeeField.BIRTHDAY.ordinal()), params.get(EmployeeField.CERTI.ordinal()));
                 return new AddCommand(optionParser, employee);
             case CMD_DEL: {
-                final Condition condition = ConditionFactory.createCondition(options, params);
+                final Condition condition = ConditionFactory.createCondition(options, params, CMD_DEL);
                 return new DeleteCommand(optionParser, condition);
             }
             case CMD_SCH: {
-                final Condition condition = ConditionFactory.createCondition(options, params);
+                final Condition condition = ConditionFactory.createCondition(options, params, CMD_SCH);
                 return new SearchCommand(optionParser, condition);
             }
             case CMD_MOD: {
-                final Condition condition = ConditionFactory.createCondition(options, params);
+                final Condition condition = ConditionFactory.createCondition(options, params, CMD_MOD);
                 final String changeColumn = params.get(params.size() - 2);
                 final String changeValue = params.get(params.size() - 1);
                 return new ModifyCommand(optionParser, condition, changeColumn, changeValue);

@@ -38,7 +38,7 @@ public class ConditionMultiOptionTest {
         final List<String> options_condition1 = Collections.singletonList("-p");
         final List<String> params_condition1 = Arrays.asList("name", "SEO KFI");
 
-        Condition condition = ConditionFactory.createCondition(options_condition1, params_condition1);
+        Condition condition = ConditionFactory.createCondition(options_condition1, params_condition1, "SCH");
 
         AndCondition andCondition = new AndCondition(condition, condition);
         assertTrue(andCondition.matches(employee));
@@ -53,8 +53,8 @@ public class ConditionMultiOptionTest {
         final List<String> options_condition2 = Collections.singletonList("-p");
         final List<String> params_condition2 = Arrays.asList("name", "Andi KIM");
 
-        Condition firstCondition = ConditionFactory.createCondition(options_condition1, params_condition1);
-        Condition secondCondition = ConditionFactory.createCondition(options_condition2, params_condition2);
+        Condition firstCondition = ConditionFactory.createCondition(options_condition1, params_condition1, "SCH");
+        Condition secondCondition = ConditionFactory.createCondition(options_condition2, params_condition2, "SCH");
 
         OrCondition orCondition = new OrCondition(firstCondition, secondCondition);
         assertTrue(orCondition.matches(employee));
